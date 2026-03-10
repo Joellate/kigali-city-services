@@ -9,7 +9,6 @@ class UserModel {
     required this.createdAt,
   });
 
-  // Convert UserModel to JSON
   Map<String, dynamic> toJson() {
     return {
       'uid': uid,
@@ -18,7 +17,6 @@ class UserModel {
     };
   }
 
-  // Create UserModel from JSON (Firestore)
   factory UserModel.fromJson(Map<String, dynamic> json) {
     return UserModel(
       uid: json['uid'] ?? '',
@@ -29,7 +27,6 @@ class UserModel {
     );
   }
 
-  // Copy with method
   UserModel copyWith({
     String? uid,
     String? email,

@@ -6,7 +6,6 @@ class AuthService {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final FirestoreService _firestoreService = FirestoreService();
 
-  // Sign up with email and password
   Future<UserModel?> signUp({
     required String email,
     required String password,
@@ -20,7 +19,6 @@ class AuthService {
 
       User? user = userCredential.user;
       if (user != null) {
-        // Create user profile in Firestore
         UserModel userModel = UserModel(
           uid: user.uid,
           email: user.email ?? '',
@@ -28,8 +26,6 @@ class AuthService {
         );
 
         await _firestoreService.createUserProfile(userModel);
-
-        // Send email verification
         await user.sendEmailVerification();
 
         return userModel;
@@ -40,7 +36,6 @@ class AuthService {
     return null;
   }
 
-  // Login with email and password
   Future<UserModel?> login({
     required String email,
     required String password,
@@ -63,7 +58,6 @@ class AuthService {
     return null;
   }
 
-  // Logout
   Future<void> logout() async {
     try {
       await _firebaseAuth.signOut();
@@ -72,7 +66,6 @@ class AuthService {
     }
   }
 
-  // Send password reset email
   Future<void> resetPassword(String email) async {
     try {
       await _firebaseAuth.sendPasswordResetEmail(email: email);
@@ -81,12 +74,10 @@ class AuthService {
     }
   }
 
-  // Get current user
   User? getCurrentUser() {
     return _firebaseAuth.currentUser;
   }
 
-  // Check if email is verified
   bool isEmailVerified() {
     User? user = _firebaseAuth.currentUser;
     if (user != null) {
@@ -96,7 +87,6 @@ class AuthService {
     return false;
   }
 
-  // Send email verification
   Future<void> sendEmailVerification() async {
     try {
       User? user = _firebaseAuth.currentUser;
@@ -108,7 +98,6 @@ class AuthService {
     }
   }
 
-  // Handle auth exceptions
   String _handleAuthException(FirebaseAuthException e) {
     switch (e.code) {
       case 'weak-password':

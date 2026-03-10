@@ -5,9 +5,6 @@ import '../models/listing_model.dart';
 class FirestoreService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  // =============== USER OPERATIONS ===============
-
-  // Create user profile
   Future<void> createUserProfile(UserModel user) async {
     try {
       await _firestore.collection('users').doc(user.uid).set(user.toJson());
@@ -16,7 +13,6 @@ class FirestoreService {
     }
   }
 
-  // Get user profile
   Future<UserModel?> getUserProfile(String uid) async {
     try {
       DocumentSnapshot doc =
@@ -30,9 +26,6 @@ class FirestoreService {
     return null;
   }
 
-  // =============== LISTING OPERATIONS ===============
-
-  // Create listing
   Future<String> createListing(ListingModel listing) async {
     try {
       DocumentReference docRef =
@@ -43,7 +36,6 @@ class FirestoreService {
     }
   }
 
-  // Get all listings
   Future<List<ListingModel>> getAllListings() async {
     try {
       QuerySnapshot snapshot = await _firestore
@@ -60,7 +52,6 @@ class FirestoreService {
     }
   }
 
-  // Get listings by user
   Future<List<ListingModel>> getUserListings(String userId) async {
     try {
       QuerySnapshot snapshot = await _firestore
@@ -78,7 +69,6 @@ class FirestoreService {
     }
   }
 
-  // Get listings by category
   Future<List<ListingModel>> getListingsByCategory(String category) async {
     try {
       QuerySnapshot snapshot = await _firestore
@@ -96,7 +86,6 @@ class FirestoreService {
     }
   }
 
-  // Get listing by ID
   Future<ListingModel?> getListingById(String listingId) async {
     try {
       DocumentSnapshot doc =
@@ -110,7 +99,6 @@ class FirestoreService {
     return null;
   }
 
-  // Update listing
   Future<void> updateListing(String listingId, ListingModel listing) async {
     try {
       await _firestore
@@ -122,7 +110,6 @@ class FirestoreService {
     }
   }
 
-  // Delete listing
   Future<void> deleteListing(String listingId) async {
     try {
       await _firestore.collection('listings').doc(listingId).delete();
@@ -131,9 +118,6 @@ class FirestoreService {
     }
   }
 
-  // =============== STREAM OPERATIONS ===============
-
-  // Stream all listings
   Stream<List<ListingModel>> streamAllListings() {
     return _firestore
         .collection('listings')
@@ -145,7 +129,6 @@ class FirestoreService {
             .toList());
   }
 
-  // Stream user listings
   Stream<List<ListingModel>> streamUserListings(String userId) {
     return _firestore
         .collection('listings')
@@ -158,7 +141,6 @@ class FirestoreService {
             .toList());
   }
 
-  // Search listings by name
   Future<List<ListingModel>> searchListings(String query) async {
     try {
       QuerySnapshot snapshot = await _firestore

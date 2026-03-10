@@ -12,13 +12,11 @@ class AuthProvider extends ChangeNotifier {
   bool _isLoading = false;
   String? _error;
 
-  // Getters
   UserModel? get user => _user;
   bool get isLoading => _isLoading;
   String? get error => _error;
   bool get isEmailVerified => _authService.isEmailVerified();
 
-  // Sign up
   Future<bool> signUp(String email, String password) async {
     _isLoading = true;
     _error = null;
@@ -41,7 +39,6 @@ class AuthProvider extends ChangeNotifier {
     }
   }
 
-  // Login
   Future<bool> login(String email, String password) async {
     _isLoading = true;
     _error = null;
@@ -67,7 +64,6 @@ class AuthProvider extends ChangeNotifier {
     return false;
   }
 
-  // Logout
   Future<void> logout() async {
     _isLoading = true;
     notifyListeners();
@@ -85,7 +81,6 @@ class AuthProvider extends ChangeNotifier {
     }
   }
 
-  // Send password reset email
   Future<bool> resetPassword(String email) async {
     _isLoading = true;
     _error = null;
@@ -104,7 +99,6 @@ class AuthProvider extends ChangeNotifier {
     }
   }
 
-  // Refresh email verification status
   Future<bool> refreshEmailVerificationStatus() async {
     try {
       User? firebaseUser = _authService.getCurrentUser();
@@ -119,7 +113,6 @@ class AuthProvider extends ChangeNotifier {
     return false;
   }
 
-  // Clear error
   void clearError() {
     _error = null;
     notifyListeners();

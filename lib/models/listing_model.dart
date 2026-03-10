@@ -23,7 +23,6 @@ class ListingModel {
     required this.timestamp,
   });
 
-  // Convert ListingModel to JSON
   Map<String, dynamic> toJson() {
     return {
       'name': name,
@@ -38,7 +37,6 @@ class ListingModel {
     };
   }
 
-  // Create ListingModel from JSON (Firestore)
   factory ListingModel.fromJson(String docId, Map<String, dynamic> json) {
     return ListingModel(
       id: docId,
@@ -56,7 +54,6 @@ class ListingModel {
     );
   }
 
-  // Copy with method
   ListingModel copyWith({
     String? id,
     String? name,

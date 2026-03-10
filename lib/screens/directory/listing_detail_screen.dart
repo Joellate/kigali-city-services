@@ -173,7 +173,7 @@ class _ListingDetailScreenState extends State<ListingDetailScreen> {
                           width: double.infinity,
                           child: OutlinedButton.icon(
                             onPressed: () {
-                              // TODO: Navigate to edit screen
+                              // edit screen
                             },
                             icon: const Icon(Icons.edit),
                             label: const Text('Edit Listing'),
@@ -184,7 +184,7 @@ class _ListingDetailScreenState extends State<ListingDetailScreen> {
                           width: double.infinity,
                           child: OutlinedButton.icon(
                             onPressed: () {
-                              // TODO: Implement delete
+                              // wire delete
                             },
                             icon: const Icon(Icons.delete, color: Colors.red),
                             label: const Text(

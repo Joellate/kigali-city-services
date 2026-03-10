@@ -14,7 +14,6 @@ class ListingProvider extends ChangeNotifier {
   String? _error;
   String _selectedCategory = 'All';
 
-  // Getters
   List<ListingModel> get allListings => _allListings;
   List<ListingModel> get userListings => _userListings;
   List<ListingModel> get filteredListings => _filteredListings;
@@ -23,7 +22,6 @@ class ListingProvider extends ChangeNotifier {
   String? get error => _error;
   String get selectedCategory => _selectedCategory;
 
-  // Create listing
   Future<bool> createListing(ListingModel listing) async {
     _isLoading = true;
     _error = null;
@@ -42,7 +40,6 @@ class ListingProvider extends ChangeNotifier {
     }
   }
 
-  // Get all listings
   Future<void> fetchAllListings() async {
     _isLoading = true;
     _error = null;
@@ -60,7 +57,6 @@ class ListingProvider extends ChangeNotifier {
     }
   }
 
-  // Get user listings
   Future<void> fetchUserListings(String userId) async {
     _isLoading = true;
     _error = null;
@@ -77,17 +73,14 @@ class ListingProvider extends ChangeNotifier {
     }
   }
 
-  // Stream all listings
   Stream<List<ListingModel>> streamAllListings() {
     return _firestoreService.streamAllListings();
   }
 
-  // Stream user listings
   Stream<List<ListingModel>> streamUserListings(String userId) {
     return _firestoreService.streamUserListings(userId);
   }
 
-  // Update listing
   Future<bool> updateListing(String listingId, ListingModel listing) async {
     _isLoading = true;
     _error = null;
@@ -106,7 +99,6 @@ class ListingProvider extends ChangeNotifier {
     }
   }
 
-  // Delete listing
   Future<bool> deleteListing(String listingId) async {
     _isLoading = true;
     _error = null;
@@ -125,7 +117,6 @@ class ListingProvider extends ChangeNotifier {
     }
   }
 
-  // Get listing by ID
   Future<void> getListingById(String listingId) async {
     _isLoading = true;
     _error = null;
@@ -142,7 +133,6 @@ class ListingProvider extends ChangeNotifier {
     }
   }
 
-  // Search listings
   Future<void> searchListings(String query) async {
     _isLoading = true;
     _error = null;
@@ -166,7 +156,6 @@ class ListingProvider extends ChangeNotifier {
     }
   }
 
-  // Filter by category
   Future<void> filterByCategory(String category) async {
     _selectedCategory = category;
     _isLoading = true;
@@ -190,7 +179,6 @@ class ListingProvider extends ChangeNotifier {
     }
   }
 
-  // Get available categories - always show all from Constants, with count
   List<String> getCategories() {
     return const [
       'All',
@@ -213,7 +201,6 @@ class ListingProvider extends ChangeNotifier {
     return _allListings.where((l) => l.category == category).length;
   }
 
-  // Clear error
   void clearError() {
     _error = null;
     notifyListeners();
