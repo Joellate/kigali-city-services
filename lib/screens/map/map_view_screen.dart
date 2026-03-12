@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import '../../providers/listing_provider.dart';
+import '../directory/listing_detail_screen.dart';
 
 class MapViewScreen extends StatefulWidget {
   const MapViewScreen({Key? key}) : super(key: key);
@@ -12,8 +13,6 @@ class MapViewScreen extends StatefulWidget {
 }
 
 class _MapViewScreenState extends State<MapViewScreen> {
-  final MapController _mapController = MapController();
-
   @override
   void initState() {
     super.initState();
@@ -25,12 +24,7 @@ class _MapViewScreenState extends State<MapViewScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Map View'),
-        centerTitle: true,
-        backgroundColor: const Color(0xFF1A237E),
-        foregroundColor: Colors.white,
-      ),
+      appBar: AppBar(title: const Text('Map View')),
       body: Consumer<ListingProvider>(
         builder: (context, listingProvider, _) {
           if (listingProvider.isLoading) {
@@ -42,25 +36,27 @@ class _MapViewScreenState extends State<MapViewScreen> {
                     point: LatLng(listing.latitude, listing.longitude),
                     width: 40,
                     height: 40,
-                    child: const Icon(
-                      Icons.place,
-                      color: Colors.red,
-                      size: 40,
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => ListingDetailScreen(listingId: listing.id),
+                          ),
+                        );
+                      },
+                      child: const Icon(Icons.place, color: Colors.red, size: 40),
                     ),
                   ))
               .toList();
 
           return FlutterMap(
-            mapController: _mapController,
             options: MapOptions(
               initialCenter: const LatLng(-1.9536, 29.8739),
               initialZoom: 13.0,
             ),
             children: [
-              TileLayer(
-                urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-                userAgentPackageName: 'com.example.kigali_city_services',
-              ),
+              TileLayer(urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png'),
               MarkerLayer(markers: markers),
             ],
           );

@@ -4,6 +4,7 @@ import '../../providers/listing_provider.dart';
 import '../../providers/auth_provider.dart';
 import '../../widgets/listing_card.dart';
 import 'create_listing_screen.dart';
+import 'edit_listing_screen.dart';
 
 class MyListingsScreen extends StatefulWidget {
   const MyListingsScreen({Key? key}) : super(key: key);
@@ -64,6 +65,8 @@ class _MyListingsScreenState extends State<MyListingsScreen> {
               final listing = listings[index];
               return ListingCard(
                 listing: listing,
+                rating: listing.averageRating,
+                reviewCount: listing.reviewCount,
                 onTap: () {
                   // Show options
                   showModalBottomSheet(
@@ -79,7 +82,13 @@ class _MyListingsScreenState extends State<MyListingsScreen> {
                               title: const Text('Edit'),
                               onTap: () {
                                 Navigator.pop(context);
-                                // edit screen
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (_) =>
+                                        EditListingScreen(listing: listing),
+                                  ),
+                                );
                               },
                             ),
                             ListTile(
