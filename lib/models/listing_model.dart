@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class ListingModel {
   final String id;
   final String name;
@@ -9,6 +11,8 @@ class ListingModel {
   final double longitude;
   final String createdBy;
   final DateTime timestamp;
+  final double averageRating;
+  final int reviewCount;
 
   ListingModel({
     required this.id,
@@ -21,6 +25,8 @@ class ListingModel {
     required this.longitude,
     required this.createdBy,
     required this.timestamp,
+    this.averageRating = 0.0,
+    this.reviewCount = 0,
   });
 
   Map<String, dynamic> toJson() {
@@ -33,11 +39,23 @@ class ListingModel {
       'latitude': latitude,
       'longitude': longitude,
       'createdBy': createdBy,
-      'timestamp': timestamp.toIso8601String(),
+      'timestamp': timestamp.toIso8601String(), // Keep for now as many might be strings
+      'averageRating': averageRating,
+      'reviewCount': reviewCount,
     };
   }
 
   factory ListingModel.fromJson(String docId, Map<String, dynamic> json) {
+    DateTime ts;
+    final timestampData = json['timestamp'];
+    if (timestampData is Timestamp) {
+      ts = timestampData.toDate();
+    } else if (timestampData is String) {
+      ts = DateTime.tryParse(timestampData) ?? DateTime.now();
+    } else {
+      ts = DateTime.now();
+    }
+
     return ListingModel(
       id: docId,
       name: json['name'] ?? '',
@@ -48,9 +66,9 @@ class ListingModel {
       latitude: (json['latitude'] ?? 0.0).toDouble(),
       longitude: (json['longitude'] ?? 0.0).toDouble(),
       createdBy: json['createdBy'] ?? '',
-      timestamp: json['timestamp'] != null
-          ? DateTime.parse(json['timestamp'])
-          : DateTime.now(),
+      timestamp: ts,
+      averageRating: (json['averageRating'] ?? 0.0).toDouble(),
+      reviewCount: json['reviewCount'] ?? 0,
     );
   }
 
@@ -65,6 +83,8 @@ class ListingModel {
     double? longitude,
     String? createdBy,
     DateTime? timestamp,
+    double? averageRating,
+    int? reviewCount,
   }) {
     return ListingModel(
       id: id ?? this.id,
@@ -77,6 +97,8 @@ class ListingModel {
       longitude: longitude ?? this.longitude,
       createdBy: createdBy ?? this.createdBy,
       timestamp: timestamp ?? this.timestamp,
+      averageRating: averageRating ?? this.averageRating,
+      reviewCount: reviewCount ?? this.reviewCount,
     );
   }
 }
