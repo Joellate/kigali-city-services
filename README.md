@@ -1,68 +1,42 @@
 # Kigali City Services
 
-Flutter app for finding services and places in Kigali (hospitals, police, libraries, restaurants, cafés, parks, etc.).
+A digital companion for discovering essential services and attractions in Kigali, Rwanda.
 
 ## Features
 
-**Auth**
-- Email/password sign up and login
-- Email verification before using the app
-- User profile stored in Firestore
+### Secure Authentication
+- **User Verification**: Mandatory email verification to ensure a secure community.
+- **Profile Management**: Personalized user profiles and history.
 
-**Listings**
-- Create, read, update, delete listings
-- Listings update in real time (Firestore streams)
-- Users only manage their own listings
+### Location Services
+- **Listing Management**: Complete CRUD operations for service providers (Hospitals, Cafés, Parks, etc.).
+- **Real-time Discovery**: Instant search and category-based filtering.
+- **Interactive Maps**: Embedded OpenStreetMap views with one-touch external navigation.
 
-**Browse and search**
-- List all listings, search by name, filter by category
-- Category chips at top, search bar, "Near you" list with distance
+### Reviews & Ratings
+- **Dynamic Feedback**: Users can leave star ratings and comments.
+- **Aggregated Data**: Listings display real-time average ratings and review counts using atomic database transactions.
 
-**Map**
-- Map view with all listings (OpenStreetMap)
-- Listing detail has a small map and a button to open Google Maps for directions
+## Firestore Database Structure
 
-**UI**
-- Bottom nav: Directory, My Listings, Map, Settings
-- Dark blue theme, basic error messages via SnackBar
+The application uses a flat, high-performance NoSQL structure in Cloud Firestore:
 
-## Project structure
+### `listings` Collection
+Stores all service and place data.
+- **Fields**: `id`, `name`, `category`, `address`, `contactNumber`, `description`, `latitude`, `longitude`, `createdBy` (uid), `timestamp`, `averageRating`, `reviewCount`.
 
-```
-lib/
-  main.dart
-  firebase_options.dart
-  models/          user_model, listing_model
-  services/        auth_service, firestore_service
-  providers/       auth_provider, listing_provider
-  screens/         auth, directory, listings, map, settings
-  widgets/         listing_card, search_bar, category_filter
-  utils/           constants, location_utils
-```
+### `reviews` Collection
+Stores individual user reviews.
+- **Fields**: `id`, `listingId` (reference), `userId`, `userName`, `rating`, `comment`, `timestamp`.
 
-## Stack
+### `users` Collection
+Stores extended user profile information.
+- **Fields**: `uid`, `email`, `displayName`, `createdAt`.
 
-- Flutter, Firebase (Auth, Firestore)
-- Provider for state
-- flutter_map + latlong2 for map (OpenStreetMap tiles)
-- geolocator for distance, url_launcher for Google Maps link
+## State Management
 
-## Setup
+The application utilizes the **Provider** package for state management, following the **ChangeNotifier** pattern.
 
-1. Clone, then `flutter pub get`
-2. Create a Firebase project, enable Auth (email/password) and Firestore
-3. Add `google-services.json` (Android) and/or `GoogleService-Info.plist` (iOS), and fill `lib/firebase_options.dart` with your project config
-4. Run `flutter run`
-
-See `FIREBASE_DATABASE_SETUP.md` for Firestore rules and collection layout.
-
-## Firestore
-
-- **users** – doc per user (uid, email, createdAt)
-- **listings** – name, category, address, contactNumber, description, latitude, longitude, createdBy, timestamp
-
-Rules: users can read/write own profile; anyone logged in can read listings; only creator can create/update/delete their listings.
-
-## License
-
-MIT.
+- **Reactive UI**: The UI automatically rebuilds when data changes in the logic layer.
+- **Stream Integration**: `ListingProvider` listens directly to Firestore Snapshots, ensuring that any changes in the database (new reviews, edited listings) are reflected on the user's screen in real-time without manual refreshes.
+- **Separation of Concerns**: Business logic is isolated from UI widgets, making the codebase maintainable and testable.

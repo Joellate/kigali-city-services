@@ -77,9 +77,6 @@ class _DirectoryScreenState extends State<DirectoryScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Kigali City'),
-        centerTitle: true,
-        backgroundColor: const Color(0xFF1A237E),
-        foregroundColor: Colors.white,
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -144,6 +141,8 @@ class _DirectoryScreenState extends State<DirectoryScreen> {
                     return ListingCard(
                       listing: listing,
                       distanceText: _getDistance(listing.latitude, listing.longitude),
+                      rating: listing.averageRating,
+                      reviewCount: listing.reviewCount,
                       onTap: () {
                         Navigator.of(context).push(
                           MaterialPageRoute(
